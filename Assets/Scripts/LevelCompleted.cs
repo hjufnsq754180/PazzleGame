@@ -28,8 +28,16 @@ public class LevelCompleted : MonoBehaviour
 
     public void PazzleCompleted()
     {
-        PlayerPrefs.SetInt("CurrentCompleteLevel", SceneManager.GetActiveScene().buildIndex + 1);
-        SceneManager.LoadScene("MainScene");
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        PlayerPrefs.SetInt("CurrentCompleteLevel", nextSceneIndex);
+        if (SceneManager.sceneCountInBuildSettings > nextSceneIndex)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+        else
+        {
+            SceneManager.LoadScene("MainScene");
+        }
     }
 
     public void GainGridPiece()

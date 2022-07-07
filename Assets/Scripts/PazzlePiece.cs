@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PazzlePiece : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class PazzlePiece : MonoBehaviour, IPointerDownHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     private RectTransform _rectTransform;
     private Canvas _mainCanvas;
     private CanvasGroup _canvasGroup;
+    private CanvasMousePosition _canvasMousePosition;
 
     private PazzleList _pazzleList;
     public int pazzleId;
-
-
 
     private void Start()
     {
@@ -20,6 +19,12 @@ public class PazzlePiece : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         _mainCanvas = GetComponentInParent<Canvas>();
         _pazzleList = GetComponentInParent<PazzleList>();
         _canvasGroup = GetComponent<CanvasGroup>();
+        _canvasMousePosition = GetComponentInParent<CanvasMousePosition>();
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        _rectTransform.anchoredPosition = _canvasMousePosition.GetMousePositionInCanvas();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -37,10 +42,5 @@ public class PazzlePiece : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     public void OnEndDrag(PointerEventData eventData)
     {
         _canvasGroup.blocksRaycasts = true;
-    }
-
-    public int GetId()
-    {
-        return pazzleId;
     }
 }
